@@ -1,17 +1,18 @@
 from gpiozero import LED, Button
 from time import sleep
 
-led = LED(21)
+green = LED(21)
+yellow = LED(25)
 button = Button(13)
 
 button.wait_for_press()
 print("Button pressed")
-led.on()
+green.on()
 sleep(3)
-led.off()
+green.off()
 
 #this toggles the led
 while True:
     button.wait_for_press()
-    led.toggle()
+    yellow.toggle()
     sleep(0.5)
