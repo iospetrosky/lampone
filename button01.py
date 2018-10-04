@@ -5,6 +5,7 @@ led = LED(21)
 button = Button(13)
 
 button.wait_for_press()
+print("Button pressed")
 led.on()
 sleep(3)
 led.off()
