@@ -1,9 +1,9 @@
 from gpiozero import LED, Button
 from time import sleep
 
-green = LED(21)
+green = LED(4)
 yellow = LED(26)
-button = Button(13)
+button = Button(21)
 
 button.wait_for_press()
 print("Button pressed")
