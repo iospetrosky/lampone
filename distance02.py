@@ -8,12 +8,12 @@
 import RPi.GPIO as GPIO
 import time
 
-trigPin = 4
-echoPin = 17
+trigPin = 5
+echoPin = 12
 MAX_DISTANCE = 220          #define the maximum measured distance
 timeOut = MAX_DISTANCE*60   #calculate timeout according to the maximum measured distance
 
-leds = [18,25,21]
+leds = [4,25,21]
 buzz = 24
 
 
