@@ -30,8 +30,8 @@ LED3 = [0x02,0x03,0x0b,0x0f,0x2f,0x3f,0xbf,0xff]	#blink mode 3
 #=================================================
 
 def print_msg():
-	print 'Program is running...'
-	print 'Please press Ctrl+C to end the program...'
+	print ('Program is running...')
+	print ('Please press Ctrl+C to end the program...')
 
 def setup():
 	GPIO.setmode(GPIO.BOARD)    # Number GPIOs by its physical location
@@ -56,7 +56,7 @@ def hc595_out():
 
 def loop():
 	WhichLeds = LED0	# Change Mode, modes from LED0 to LED3
-	sleeptime = 0.1		# Change speed, lower value, faster speed
+	sleeptime = 0.5		# Change speed, lower value, faster speed
 	while True:
 		for i in range(0, len(WhichLeds)):
 			hc595_in(WhichLeds[i])
