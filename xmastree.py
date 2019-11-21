@@ -18,6 +18,13 @@ RCLK  = 12
 SRCLK = 13
 RESET = 7
 
+LINE01 = 128
+LINE02 = 64
+LINE03 = 32
+
+matrix = 0  #this is the light matrix
+
+
 #===============   LED Mode Defne ================
 #	You can define yourself, in binay, and convert it to Hex 
 #	8 bits a group, 0 means off, 1 means on
@@ -44,15 +51,15 @@ def setup():
     GPIO.output(RCLK, GPIO.LOW)
     GPIO.output(SRCLK, GPIO.LOW)
 
-def blink_in():    
-    GPIO.output(SDI, 0)
-    GPIO.output(SRCLK, GPIO.HIGH)
-    time.sleep(0.001)
-    GPIO.output(SRCLK, GPIO.LOW)
-    GPIO.output(SDI, 1)
-    GPIO.output(SRCLK, GPIO.HIGH)
-    time.sleep(0.001)
-    GPIO.output(SRCLK, GPIO.LOW)
+def blink_on(line):
+    global matrix
+    matrix = matrix + line
+    hc595_in(matrix)    
+
+def blink_off(line):
+    global matrix
+    matrix = matrix - line
+    hc595_in(matrix)    
     
 def hc595_in(dat):
     print("Byte {}".format(dat))
@@ -71,16 +78,29 @@ def hc595_out():
 	GPIO.output(RCLK, GPIO.LOW)
 
 def loop():
-    WhichLeds = LED3	# Change Mode, modes from LED0 to LED3
+    WhichLeds = LED2	# Change Mode, modes from LED0 to LED3
     sleeptime = 2.0		# Change speed, lower value, faster speed
     a = 1
+    matrix = 0
     while a == 1:
+        reset()
+        blink_on(LINE01)
+        hc595_out()
+        time.sleep(2)
+        blink_on(LINE03)
+        hc595_out()
+        time.sleep(2)
+        blink_off(LINE03)
+        hc595_out()
+        time.sleep(2)
+        
         for i in range(0, len(WhichLeds)):
             reset()
             hc595_in(WhichLeds[i])
             hc595_out()
             time.sleep(sleeptime)
-        a =2
+
+        a = 2
 
 def reset():
     GPIO.output(RESET, GPIO.LOW)
