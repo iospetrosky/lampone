@@ -1,21 +1,20 @@
 import RPi.GPIO as GPIO
 import time
 
-SDI   = 11
-RCLK  = 12
-SRCLK = 13
-RESET = 7
+SDI   = 11 #serial input
+RCLK  = 12 #serial push
+SRCLK = 13 #activation 
+RESET = 7  #reset
 
 #Q0 is the leftmost bit
-LINE01 = 128 #Q0
-LINE02 = 64  #Q1
-LINE03 = 32  #etc.
+LINES = [128, 64, 32, 16, 8, 4, 2, 1]
+ACTIVE = [0,1,2]
 
 matrix = 0  #this is the light matrix, the byte to be pushed
 
 def intro_msg():
 	print ('Program is running...')
-	print ('Please press Ctrl+C to end the program...')
+	print ('Press Ctrl+C to end the program...')
 
 def setup():
     GPIO.setmode(GPIO.BOARD)    # Number GPIOs by its physical location
@@ -29,14 +28,24 @@ def setup():
 
 def lights_on(line):
     global matrix
+    print("Switching light: {} -- ON".format(line))
     matrix = matrix + line
-    hc595_in(matrix)    
+    hc595_push(matrix)    
+    hc595_go()
 
 def lights_off(line):
     global matrix
+    print("Switching light: {} -- OFF".format(line))
     matrix = matrix - line
-    hc595_in(matrix)    
-    
+    hc595_push(matrix)    
+    hc595_go()
+
+def lights_switch(line):
+    if ((matrix & line) == line):
+        lights_off(line)
+    else:
+        lights_on(line)
+
 def hc595_push(dat):
     print("Pushing {}".format(dat))
     for bit in range(0, 8):
@@ -59,13 +68,16 @@ def hc595_reset():
 def loop():
     while True:
         reset()
-
+        #select one of the active lights to play with
+        lights_switch(choice(ACTIVE)) #sperimentare anche sample al posto di choice
+        #wait some random milliseconds
+        time.sleep(int(random()*1000))
 
 def destroy():   # When program ending, the function is executed. 
 	GPIO.cleanup()
 
 if __name__ == '__main__': # Program starting from here 
-    print_msg()
+    intro_msg()
     setup() 
     try:
         loop()  
