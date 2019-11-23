@@ -1,11 +1,11 @@
 import RPi.GPIO as GPIO
 import time
 
-led_pin = 4
-sens_pin = 5
+led_pin = 40
+sens_pin = 16
 
 def setup():
-    GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
+    GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
     GPIO.setup(led_pin, GPIO.OUT)   # Set ledPin's mode is output
     GPIO.output(led_pin, GPIO.LOW)  # Set ledPin low to off led
     GPIO.setup(sens_pin, GPIO.IN)
