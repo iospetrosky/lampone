@@ -11,7 +11,7 @@ MOTION = 16 #motion detection pin
 
 #Q0 is the leftmost bit
 LINES = [128, 64, 32, 16, 8, 4, 2, 1]
-ACTIVE = [0,1,2]
+ACTIVE = [1,2,3]
 
 matrix = 0  #this is the light matrix, the byte to be pushed
 

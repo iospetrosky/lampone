@@ -43,7 +43,7 @@ def destroy():   # When program ending, the function is executed.
         
 setup()
 reset()
-shiftout(0b11100000)
+shiftout(0b11111111)
 reset()
 shiftout(0b10000000)
 reset()
