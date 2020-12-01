@@ -2,16 +2,17 @@ import RPi.GPIO as GPIO
 import time, signal, sys
 from random import choice, random
 
-SDI   = 11 #serial input
-RCLK  = 12 #serial push
-SRCLK = 13 #activation 
-RESET = 7  #reset
+SDI   = 36 #serial input
+RCLK  = 40 #serial push
+SRCLK = 38 #activation 
+RESET = 37  #reset
 
 MOTION = 16 #motion detection pin
 
 #Q0 is the leftmost bit
 LINES = [128, 64, 32, 16, 8, 4, 2, 1]
-ACTIVE = [1,2,3]
+#A = 0, H = 7
+ACTIVE = [1,3,5,7]
 
 matrix = 0  #this is the light matrix, the byte to be pushed
 
@@ -31,11 +32,11 @@ def setup():
     GPIO.setup(RCLK, GPIO.OUT)
     GPIO.setup(SRCLK, GPIO.OUT)
     GPIO.setup(RESET, GPIO.OUT)
-    GPIO.setup(MOTION, GPIO.IN)
+    #GPIO.setup(MOTION, GPIO.IN)
     GPIO.output(SDI, GPIO.LOW)
     GPIO.output(RCLK, GPIO.LOW)
     GPIO.output(SRCLK, GPIO.LOW)
-    GPIO.output(RESET, GPIO.LOW)
+    #GPIO.output(RESET, GPIO.LOW)
     signal.signal(signal.SIGTERM, terminateProcess)
 
 def lights_on(line):
@@ -78,13 +79,13 @@ def hc595_go():
 	GPIO.output(RCLK, GPIO.LOW)
 
 def hc595_reset():
-    GPIO.output(RESET, GPIO.HIGH) 
+    GPIO.output(RESET, GPIO.LOW) 
     time.sleep(0.01)    
-    GPIO.output(RESET, GPIO.LOW)
+    GPIO.output(RESET, GPIO.HIGH)
 
 
 def loop():
-    motion_detected = False
+    motion_detected = True #set back to False when this crap will work
     while True:
         last_activation = time.time()
         while (motion_detected and ((time.time() - last_activation) < 60*1)):
@@ -100,12 +101,12 @@ def loop():
         print("No motion in the room")
         lights_all_off()
         time.sleep(0.5)
-        motion_detected = False
-        if (GPIO.input(MOTION)):
-            motion_detected = True
+        #motion_detected = False
+        #if (GPIO.input(MOTION)):
+        #    motion_detected = True
 
 def destroy():   # When program ending, the function is executed. 
-	GPIO.cleanup()
+    GPIO.cleanup()
 
 if __name__ == 'zz__main__': # Program starting from here 
     setup() 
@@ -124,4 +125,6 @@ if __name__ == '__main__': # Program starting from here
     except KeyboardInterrupt:  
         print("Exiting")  
     hc595_reset()
+    lights_all_off()
+
     destroy()

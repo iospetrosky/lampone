@@ -1,10 +1,11 @@
 import RPi.GPIO as GPIO
 import time
+from random import choice, random
 
-SDI   = 11
-RCLK  = 12
-SRCLK = 13
-RESET = 7
+SDI   = 36
+RCLK  = 40
+SRCLK = 38
+RESET = 37
 
 def setup():
 	GPIO.setmode(GPIO.BOARD)    # Number GPIOs by its physical location
@@ -25,8 +26,8 @@ def shiftout(byte):
         GPIO.output(SRCLK, GPIO.HIGH)
         time.sleep(0.001)
         GPIO.output(SRCLK, GPIO.LOW)
-    print("pausa pre-accensione")
-    time.sleep(2)
+    #print("pausa pre-accensione")
+    #time.sleep(2)
     GPIO.output(RCLK, GPIO.HIGH)
     time.sleep(0.001)
     GPIO.output(RCLK, GPIO.LOW)
@@ -40,14 +41,38 @@ def reset():
         
 def destroy():   # When program ending, the function is executed. 
 	GPIO.cleanup()
-        
+
+
+LINES = [128, 64, 32, 16, 8, 4, 2, 1]
+ACTIVE = [5,6,7]
+
+
 setup()
+#reset()
+#shiftout(0b00000001)
+#reset()
+#shiftout(0b00000010)
 reset()
-shiftout(0b11111111)
+shiftout(0b00000100)
+#reset()
+#shiftout(0b00000111)
+
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+# reset()
+# shiftout(LINES[choice(ACTIVE)])
+
+
+#all off
 reset()
-shiftout(0b10000000)
-reset()
-shiftout(0b01000000)
-reset()
-shiftout(0b00100000)
+shiftout(0b00000000)
+
 destroy()
