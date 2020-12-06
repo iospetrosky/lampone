@@ -48,27 +48,8 @@ ACTIVE = [1,3,5,7]
 
 
 setup()
-#reset()
-#shiftout(0b00000001)
-#reset()
-#shiftout(0b00000010)
-#reset()
-#shiftout(0b11111111)
-#reset()
-#shiftout(0b00000111)
-
-reset()
-shiftout(LINES[1])
-# reset()
-# shiftout(LINES[3])
-# reset()
-# shiftout(LINES[5])
-# reset()
-# shiftout(LINES[7])
-# reset()
-
-#all off
-reset()
-shiftout(0b11111111)
+while True:
+    reset()
+    shiftout(0b00000000)
 
 destroy()

@@ -1,13 +1,12 @@
 import RPi.GPIO as GPIO
 import time, signal, sys
 from random import choice, random, randint
+import json
 
-SDI   = 36 #serial input
-RCLK  = 40 #serial push
-SRCLK = 38 #activation 
+SDI   = 40 #serial input
+RCLK  = 38 #serial push
+SRCLK = 36 #activation 
 RESET = 32  #reset
-
-MOTION = 16 #motion detection pin
 
 #Q0 is the leftmost bit
 LINES = [128, 64, 32, 16, 8, 4, 2, 1]
@@ -32,7 +31,6 @@ def setup():
     GPIO.setup(RCLK, GPIO.OUT)
     GPIO.setup(SRCLK, GPIO.OUT)
     GPIO.setup(RESET, GPIO.OUT)
-    #GPIO.setup(MOTION, GPIO.IN)
     GPIO.output(SDI, GPIO.LOW)
     GPIO.output(RCLK, GPIO.LOW)
     GPIO.output(SRCLK, GPIO.LOW)
@@ -57,12 +55,10 @@ def lights_off(line):
 def lights_all_off():
     global matrix
     matrix = 0
-    #hc595_reset()
     hc595_push(0)
     hc595_go()
 
 def lights_all_on():
-    #hc595_reset()
     hc595_push(255)
     hc595_go()
 
@@ -76,7 +72,6 @@ def hc595_push(dat):
     print("Pushing {}".format(dat))
     for bit in range(0, 8):
         b = (dat >> bit) & 1
-        #print(b)
         GPIO.output(SDI, b )
         GPIO.output(SRCLK, GPIO.HIGH)
         time.sleep(0.001)
@@ -94,14 +89,26 @@ def hc595_reset():
 
 
 def loop():
-    motion_detected = True #set back to False when this crap will work
+    web_switch = False 
     while True:
-        last_activation = time.time()
-        while (motion_detected and ((time.time() - last_activation) < 60*1)):
+        time.sleep(2)
+        #open json file and check if the switch is active
+        try:
+            data = json.load(open("/home/pi/WWW/lampone/web_switch.json"))
+            if (data['mode'] == 'off'):
+                web_switch = False 
+            if (data['mode'] == 'on'):
+                web_switch = True
+        except:
+            print("Error loading JSON")
+            web_switch = False
+
+        if web_switch:
             #when motion is detected the lights go for a while
             #select the kind of effects
             game = randint(1,3)
-            game = 2
+            data['game'] = game
+            json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
             if (game == 1):
                 print("Game 1 - random lights")
                 lights_all_off()
@@ -109,11 +116,10 @@ def loop():
                     print ("Iteration {}".format(iter))
                     #select one of the active lights to play with
                     lights_switch(LINES[choice(ACTIVE)]) 
-                    #lights_switch(LINES[1]) 
                     time.sleep(random() + 0.3)
             if (game == 2):
                 print("Game 2 - circle lights")
-                for iter in range(0,20):
+                for iter in range(0,10):
                     print ("Iteration {}".format(iter))
                     lights_all_off()
                     hc595_reset()
@@ -122,7 +128,6 @@ def loop():
                         lights_on(LINES[lg])
                         time.sleep(1)
                         lights_off(LINES[lg])
-                        #time.sleep(0.2)
             if (game == 3):
                 print ("Game 3 - intermittent all lights")
                 intermittence = randint(50,400) / 1000
@@ -133,14 +138,10 @@ def loop():
                     time.sleep(intermittence)
                     lights_all_on()
                     time.sleep(intermittence)
-
-        #wait for motion
-        print("No motion in the room")
-        lights_all_off()
-        time.sleep(0.5)
-        #motion_detected = False
-        #if (GPIO.input(MOTION)):
-        #    motion_detected = True
+        else:
+            print("Tree is off")
+            lights_all_off()
+            hc595_reset()
 
 def destroy():   # When program ending, the function is executed. 
     hc595_push(0)

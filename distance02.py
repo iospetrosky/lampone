@@ -8,8 +8,8 @@
 import RPi.GPIO as GPIO
 import time
 
-trigPin = 5
-echoPin = 12
+trigPin = 4
+echoPin = 17
 MAX_DISTANCE = 220          #define the maximum measured distance
 timeOut = MAX_DISTANCE*60   #calculate timeout according to the maximum measured distance
 

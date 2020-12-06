@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XMas tree lights app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='xmas.css') }}">
+    
+<script language="javascript">
+
+function light(mode) {
+    window.location.replace("{{ url_for('tree') }}/"  + mode);
+}
+
+</script>    
+    
+</head>
+
+<body>
+<header>
+  <h1>Xmas tree menu</h1>
+</header>
+<p>{{ data[0] }}</p>
+<div>
+<button class="ON" onclick="light('on')">Tree ON</button>
+<button class="OFF" onclick="light('off')">Tree OFF</button>
+</div>
+
+</body>
+</html>

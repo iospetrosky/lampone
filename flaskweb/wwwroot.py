@@ -8,6 +8,20 @@ app = Flask(__name__)
 def index():
     return "<html><body><h1>Test site running under Flask</h1></body></html>"
 
+@app.route("/tree")
+def tree():
+    data = {'mode': 'off', 'game':0}
+    json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
+    data=['App not initialised - Tree set to off']
+    return render_template('xmaslights.html',data=data)
+
+@app.route("/tree/<mode>")
+def tree_action(mode):
+    data = {'mode': mode, 'game':0}
+    json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
+    data=["Tree set to " + mode]
+    return render_template('xmaslights.html',data=data)
+
 @app.route("/xmas")
 def xmas():
     data=['']
@@ -23,7 +37,7 @@ def light_action(light, mode):
     return render_template('xmasmenu.html',data=data)
     
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',debug=True)
+    app.run(host='0.0.0.0',debug=False)
     
     
     
