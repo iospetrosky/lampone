@@ -11,6 +11,9 @@ function light(mode) {
     window.location.replace("{{ url_for('tree') }}/"  + mode);
 }
 
+window.setInterval(function() {
+        window.location.replace("{{ url_for('tree') }}")
+    }, 10000); 
 </script>    
     
 </head>
@@ -19,11 +22,19 @@ function light(mode) {
 <header>
   <h1>Xmas tree menu</h1>
 </header>
-<p>{{ data[0] }}</p>
+<p>Tree lights currently: {{ data["mode"] }}</p>
 <div>
 <button class="ON" onclick="light('on')">Tree ON</button>
 <button class="OFF" onclick="light('off')">Tree OFF</button>
+{% if data['manual']=='manual' %}
+<button class="AUTO" onclick="light('auto')">AUTO</button>
+{% endif %}
 </div>
+{% if data['manual']=='auto' %}
+<p>Tree auto switch ON : {{ data["next_on"] }}</p>
+<p>Tree auto switch OFF : {{ data["next_off"] }}</p>
+{% endif %}
+
 
 </body>
 </html>

@@ -28,3 +28,6 @@ button.ON {
 button.OFF {
     background-color: #FF0011; /* Red */
 }
+button.AUTO {
+    background-color: #034255; /* Bluette */
+}

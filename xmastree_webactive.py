@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time, signal, sys
+import time, signal, sys, datetime
 from random import choice, random, randint
 import json
 
@@ -68,6 +68,15 @@ def lights_switch(line):
     else:
         lights_on(line)
 
+def single_bit_push(b):
+    print("Single push {}".format(b))
+    GPIO.output(SDI, b )
+    GPIO.output(SRCLK, GPIO.HIGH)
+    time.sleep(0.001)
+    GPIO.output(SRCLK, GPIO.LOW)
+    hc595_go()
+
+
 def hc595_push(dat):
     print("Pushing {}".format(dat))
     for bit in range(0, 8):
@@ -90,11 +99,22 @@ def hc595_reset():
 
 def loop():
     web_switch = False 
+    jsonfile = "/home/pi/WWW/lampone/web_switch.json"
     while True:
         time.sleep(2)
         #open json file and check if the switch is active
         try:
-            data = json.load(open("/home/pi/WWW/lampone/web_switch.json"))
+            data = json.load(open(jsonfile))
+            if (data["manual"] == "auto"):
+                now = datetime.datetime.now()
+                t1 = data["next_on"].split(":")
+                t2 = data["next_off"].split(":")
+                if (now.hour >= int(t1[0])) and (now.minute >= int(t1[1])) and (data["mode"] == "off"):
+                    data["mode"] = "on"
+                    json.dump(data, open(jsonfile,"w"))
+                if (now.hour >= int(t2[0])) and (now.minute >= int(t2[1])) and (data["mode"] == "on"):
+                    data["mode"] = "off"
+                    json.dump(data, open(jsonfile,"w"))
             if (data['mode'] == 'off'):
                 web_switch = False 
             if (data['mode'] == 'on'):
@@ -104,40 +124,19 @@ def loop():
             web_switch = False
 
         if web_switch:
-            #when motion is detected the lights go for a while
-            #select the kind of effects
-            game = randint(1,3)
-            data['game'] = game
-            json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
-            if (game == 1):
-                print("Game 1 - random lights")
-                lights_all_off()
-                for iter in range(0,10):
-                    print ("Iteration {}".format(iter))
-                    #select one of the active lights to play with
-                    lights_switch(LINES[choice(ACTIVE)]) 
-                    time.sleep(random() + 0.3)
-            if (game == 2):
-                print("Game 2 - circle lights")
-                for iter in range(0,10):
-                    print ("Iteration {}".format(iter))
-                    lights_all_off()
-                    hc595_reset()
-                    for lg in ACTIVE:
-                        #hc595_reset()
-                        lights_on(LINES[lg])
-                        time.sleep(1)
-                        lights_off(LINES[lg])
-            if (game == 3):
-                print ("Game 3 - intermittent all lights")
-                intermittence = randint(50,400) / 1000
-                for iter in range(0,10):
-                    print ("Iteration {}".format(iter))
-                    hc595_reset()
-                    lights_all_off()
-                    time.sleep(intermittence)
-                    lights_all_on()
-                    time.sleep(intermittence)
+            sleep_interval = randint(20,300) / 1000
+            for j in range(0,100):
+                single_bit_push(randint(0,1))
+                time.sleep(sleep_interval)
+            hc595_reset()
+            # for j in range(0,5):
+            #     lights_all_on()
+            #     time.sleep(sleep_interval)
+            #     lights_all_off()
+            #     time.sleep(0.2)
+
+
+
         else:
             print("Tree is off")
             lights_all_off()

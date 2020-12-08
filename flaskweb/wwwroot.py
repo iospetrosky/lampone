@@ -3,24 +3,29 @@ import json
 from datetime import datetime
 
 app = Flask(__name__)
- 
+
+
+
 @app.route("/")
 def index():
     return "<html><body><h1>Test site running under Flask</h1></body></html>"
 
 @app.route("/tree")
 def tree():
-    data = {'mode': 'off', 'game':0}
-    json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
-    data=['App not initialised - Tree set to off']
+    data = json.load(open("/home/pi/WWW/lampone/web_switch.json"))
     return render_template('xmaslights.html',data=data)
 
 @app.route("/tree/<mode>")
 def tree_action(mode):
-    data = {'mode': mode, 'game':0}
+    data = json.load(open("/home/pi/WWW/lampone/web_switch.json"))
+    if mode=='on' or mode=='off':
+        data["mode"] = mode
+        data["manual"] = "manual"
+    if mode =='auto':
+        data["manual"] = "auto"
     json.dump(data, open("/home/pi/WWW/lampone/web_switch.json","w"))
-    data=["Tree set to " + mode]
     return render_template('xmaslights.html',data=data)
+
 
 @app.route("/xmas")
 def xmas():
