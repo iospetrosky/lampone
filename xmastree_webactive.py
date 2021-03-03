@@ -101,7 +101,7 @@ def loop():
     web_switch = False 
     jsonfile = "/home/pi/WWW/lampone/web_switch.json"
     while True:
-        time.sleep(2)
+        time.sleep(0.5)
         #open json file and check if the switch is active
         try:
             data = json.load(open(jsonfile))
@@ -124,23 +124,22 @@ def loop():
             web_switch = False
 
         if web_switch:
+            setup()
             sleep_interval = randint(20,300) / 1000
             for j in range(0,100):
                 single_bit_push(randint(0,1))
                 time.sleep(sleep_interval)
-            hc595_reset()
-            # for j in range(0,5):
-            #     lights_all_on()
-            #     time.sleep(sleep_interval)
-            #     lights_all_off()
-            #     time.sleep(0.2)
-
-
-
+            #hc595_reset()
+            for j in range(0,5):
+                lights_all_on()
+                time.sleep(sleep_interval)
+                lights_all_off()
+                time.sleep(0.2)
+            destroy()
         else:
             print("Tree is off")
-            lights_all_off()
-            hc595_reset()
+            #lights_all_off()
+            #hc595_reset()
 
 def destroy():   # When program ending, the function is executed. 
     hc595_push(0)
@@ -158,7 +157,7 @@ if __name__ == 'zz__main__': # Program starting from here
     
 if __name__ == '__main__': # Program starting from here 
     intro_msg()
-    setup() 
+    #setup() 
     try:
         loop()  
     except KeyboardInterrupt:  
