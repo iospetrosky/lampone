@@ -7,7 +7,7 @@ import os
 
 GPIO.setwarnings(False)
 # Set the layout for the pin declaration
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 # The Raspberry Pi pin 11(GPIO 18) connect to servo signal line(yellow wire)
 # Pin 11 send PWM signal to control servo motion
 GPIO.setup(12, GPIO.OUT)
