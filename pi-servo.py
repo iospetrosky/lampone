@@ -5,12 +5,14 @@ import RPi.GPIO as GPIO
 import time
 import os
 
+control_pin = 18
+
 GPIO.setwarnings(False)
 # Set the layout for the pin declaration
 GPIO.setmode(GPIO.BCM)
 # The Raspberry Pi pin 11(GPIO 18) connect to servo signal line(yellow wire)
 # Pin 11 send PWM signal to control servo motion
-GPIO.setup(12, GPIO.OUT)
+GPIO.setup(control_pin, GPIO.OUT)
 
 # menu info
 print "l = move to the left"
@@ -22,7 +24,7 @@ print "q = stop and exit"
 while True:
 	# Now we will start with a PWM signal at 50Hz at pin 18. 
 	# 50Hz should work for many servos very will. If not you can play with the frequency if you like.
-	Servo = GPIO.PWM(12, 50)						
+	Servo = GPIO.PWM(control_pin, 50)						
 
 	# This command sets the left position of the servo
 	Servo.start(2.5)
