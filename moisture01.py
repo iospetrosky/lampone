@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 ## send the notification via email
-def sendmail(text_message):
+def sendmail(subject, text_message):
     smtp_username = "loruk371@gmail.com" 
     smtp_password = "tiudnygltapfymks" 
 
@@ -20,9 +20,9 @@ def sendmail(text_message):
     message = MIMEMultipart()
     message['From'] = smtp_username
     message['To'] = receiver_address
-    message['Subject'] = text_message
+    message['Subject'] = subject
 
-    message.attach(MIMEText("Questo e' un messaggio mandato da Raspberry per monitorare le piante", 'plain'))
+    message.attach(MIMEText(text_message, 'plain'))
 
     session = smtplib.SMTP('smtp.gmail.com', 587) #use gmail with port
     session.starttls() #enable security
@@ -34,7 +34,7 @@ def sendmail(text_message):
 dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 moist_pin = 8
-relay_pins = [7]
+relay_pins = [7,11]
 
 # returns 0 when the moisture led is on meaning that the soil
 # is moist enough - when it turns to 1 it means watering is needed
@@ -43,22 +43,33 @@ GPIO.setmode(GPIO.BOARD) # phisical bnoard
 GPIO.setup(moist_pin, GPIO.IN)
 GPIO.setup(relay_pins, GPIO.OUT)
 
+GPIO.output(relay_pins[1], GPIO.HIGH)
+GPIO.output(relay_pins[0], GPIO.HIGH)
+
 print("Activation of relay at pin {}".format(relay_pins[0]))
 # switches are triggered with LOW!!
 GPIO.output(relay_pins[0], GPIO.LOW)
 
 time.sleep(5) #wait for the sensor to sense something
-ms = GPIO.input(moist_pin)
 
+a_message = "Test sequence: "
+for x in range(1,75):
+    ms = GPIO.input(moist_pin)
+    a_message = "{}{}".format(a_message, ms)
+    time.sleep(0.1)
+
+#ms = GPIO.input(moist_pin)
 print("Using pin {0} for input - test returned {1}".format(moist_pin, ms))
 
 if ms == 1:
-    text_message = "Le fragole devono essere annaffiate - {}" .format(dt_string)
+    a_subject = "Le fragole devono essere innaffiate - {}" .format(dt_string)
 else:
-    text_message = "Le fragole stanno bene - {}".format(dt_string)
+    a_subject = "Le fragole stanno bene - {}".format(dt_string)
 
-GPIO.output(relay_pins[0], GPIO.LOW)
+#GPIO.output(relay_pins[0], GPIO.HIGH)
 GPIO.cleanup() #this should also switch off the relay
 
-print(text_message)
-sendmail(text_message)
+print(a_subject)
+print(a_message)
+
+#sendmail(a_subject, a_message)
