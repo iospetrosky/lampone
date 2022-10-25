@@ -6,6 +6,20 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 
+#calculate the charge time of the capacitor
+def rc_time (pin):
+    count = 0
+    #Output on the pin for 
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+    time.sleep(0.1)
+    #Change the pin back to input
+    GPIO.setup(pin, GPIO.IN)
+    #Count until the pin goes high
+    while (GPIO.input(pin) == GPIO.LOW):
+        count += 1
+    return count
+
 
 ## send the notification via email
 def sendmail(subject, text_message):
@@ -34,7 +48,8 @@ def sendmail(subject, text_message):
 dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 moist_pin = 8
-relay_pins = [7,11]
+light_pin = 29
+relay_pins = [7,11] #of the moist sensors
 pots = ['Strawberry','Ivy']
 
 # returns 0 when the moisture led is on meaning that the soil
@@ -51,7 +66,7 @@ a_message = ""
 for x in range(0,2):
     GPIO.output(relay_pins[x], GPIO.HIGH)
 
-for pin in range(0,2):
+for pin in range(0,2): #only the one of the moist sensors
     print("Activation of relay at pin {}".format(relay_pins[pin]))
     # switches are triggered with LOW!!
     GPIO.output(relay_pins[pin], GPIO.LOW)
@@ -79,7 +94,14 @@ for pin in range(0,2):
     GPIO.output(relay_pins[pin], GPIO.HIGH)
     time.sleep(1)
     
-GPIO.cleanup() #this should also switch off the relays
+GPIO.cleanup() #this should also switch off the relays (switching off the lights)
+
+#now check the light sensor
+GPIO.setmode(GPIO.BOARD)
+light_level = rc_time(light_pin)
+
+a_message += "\nLight level is: {}".format(light_level)
+
 
 print(a_subject)
 print(a_message)
