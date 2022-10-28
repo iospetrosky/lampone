@@ -20,7 +20,6 @@ def rc_time (pin):
         count += 1
     return count
 
-
 ## send the notification via email
 def sendmail(subject, text_message):
     smtp_username = "loruk371@gmail.com" 
