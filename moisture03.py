@@ -48,7 +48,7 @@ dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 moist_pin = 8
 light_pin = 29
-relay_pins = [7,11] #of the moist sensors
+relay_pins = [7,11, XX] # of the moist sensors, the last is the light switch
 pots = ['Strawberry','Ivy']
 
 # returns 0 when the moisture led is on meaning that the soil
@@ -61,8 +61,8 @@ GPIO.setup(relay_pins, GPIO.OUT)
 a_subject = "State of the sensors at - {}" .format(dt_string)
 a_message = ""
 
-#reset all the relay ports
-for x in range(0,2):
+#reset all the relay ports, this should also switch off the light
+for x in range(0,3):
     GPIO.output(relay_pins[x], GPIO.HIGH)
 
 for pin in range(0,2): #only the one of the moist sensors
@@ -98,9 +98,12 @@ GPIO.cleanup() #this should also switch off the relays (switching off the lights
 #now check the light sensor
 GPIO.setmode(GPIO.BOARD)
 light_level = rc_time(light_pin)
-
 a_message += "\nLight level is: {}".format(light_level)
-
+if light_level > 300: # higher means darker
+    if datetime.now().hour > 8 and datetime.now().hour < 6:
+        ## only during the day
+        GPIO.output(relay_pins[-1] , GPIO.LOW)
+        a_message += "\nSwitching on the light"
 
 print(a_subject)
 print(a_message)
