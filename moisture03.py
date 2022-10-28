@@ -46,16 +46,16 @@ def sendmail(subject, text_message):
 
 dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-moist_pin = 8
+moist_pins = [8,16]
 light_pin = 29
-relay_pins = [7,11, XX] # of the moist sensors, the last is the light switch
+relay_pins = [7,11,15] # of the moist sensors, the last is the light switch
 pots = ['Strawberry','Ivy']
 
 # returns 0 when the moisture led is on meaning that the soil
 # is moist enough - when it turns to 1 it means watering is needed
 GPIO.setmode(GPIO.BOARD) # phisical bnoard
 
-GPIO.setup(moist_pin, GPIO.IN)
+GPIO.setup(moist_pins, GPIO.IN)
 GPIO.setup(relay_pins, GPIO.OUT)
 
 a_subject = "State of the sensors at - {}" .format(dt_string)
@@ -79,11 +79,11 @@ for pin in range(0,2): #only the one of the moist sensors
     #    a_message += "{}".format(ms)
     #    time.sleep(0.1)
 
-    ms = GPIO.input(moist_pin)
+    ms = GPIO.input(moist_pins[pin])
     a_message += "{}".format(ms)
     a_message +="\n"
     
-    print("Using pin {0} for input - test returned {1}".format(moist_pin, ms))
+    print("Using pin {0} for input - test returned {1}".format(moist_pins[pin], ms))
 
     if ms == 1:
         a_message += "{} need water\n" .format(pots[pin])
@@ -93,14 +93,13 @@ for pin in range(0,2): #only the one of the moist sensors
     GPIO.output(relay_pins[pin], GPIO.HIGH)
     time.sleep(1)
     
-GPIO.cleanup() #this should also switch off the relays (switching off the lights)
+
 
 #now check the light sensor
-GPIO.setmode(GPIO.BOARD)
 light_level = rc_time(light_pin)
 a_message += "\nLight level is: {}".format(light_level)
 if light_level > 300: # higher means darker
-    if datetime.now().hour > 8 and datetime.now().hour < 6:
+    if datetime.now().hour > 8 and datetime.now().hour < 18:
         ## only during the day
         GPIO.output(relay_pins[-1] , GPIO.LOW)
         a_message += "\nSwitching on the light"
@@ -109,3 +108,5 @@ print(a_subject)
 print(a_message)
 
 sendmail(a_subject, a_message)
+
+#GPIO.cleanup() #this should also switch off the relays (switching off the lights)
