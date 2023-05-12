@@ -48,6 +48,7 @@ dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 moist_pins = [8,16]
 light_pin = 29
+LIGHT_TRESHOLD = 1000 # higher means darker 
 relay_pins = [7,11] # of the moist sensors, the last is the light switch
 pots = ['Strawberry','Ivy']
 
@@ -70,6 +71,7 @@ print("Activation of relay at pin {}".format(relay_pins[0]))
 # switches are triggered with LOW!!
 GPIO.output(relay_pins[0], GPIO.LOW)
 time.sleep(5) #wait for the sensor to sense something
+do_send_mail = False
 
 for pin in range(0,2): #only the one of the moist sensors
     a_message += "Test sequence for {}: ".format(pin)
@@ -82,6 +84,7 @@ for pin in range(0,2): #only the one of the moist sensors
 
     if ms == 1:
         a_message += "{} need water\n" .format(pots[pin])
+        do_send_mail = True
     else:
         a_message += "{} is wet enough\n" .format(pots[pin])
 
@@ -92,7 +95,7 @@ time.sleep(1)
 #now check the light sensor
 light_level = rc_time(light_pin)
 a_message += "\nLight level is: {}".format(light_level)
-if light_level > 400: # higher means darker
+if light_level > LIGHT_TRESHOLD: # higher means darker
     if datetime.now().hour > 8 and datetime.now().hour < 18:
         ## only during the day
         GPIO.output(relay_pins[-1] , GPIO.LOW)
@@ -100,7 +103,7 @@ if light_level > 400: # higher means darker
 
 print(a_subject)
 print(a_message)
-
-sendmail(a_subject, a_message)
+if do_send_mail: #not sending if only light and not water needed
+    sendmail(a_subject, a_message)
 
 #GPIO.cleanup() #this should also switch off the relays (switching off the lights)
