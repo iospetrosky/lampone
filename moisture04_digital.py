@@ -7,8 +7,19 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 
+class Moisture:
+    def __init__(self, channel, pot):
+        self.Channel = channel
+        self.Pot = pot
+        self.MoistRead = 0
+
 address = 0x48 # test with command: i2cdetect -y 1
-Analogs = [0x40, 0x41] # list of active analog inputs
+
+moistures = [
+    Moisture(0x40, 'Strawberry'),
+    Moisture(0x41, 'Forest')
+]
+
 Relay = 7 # pin to control the relay
 
 GPIO.setmode(GPIO.BOARD) # phisical board
@@ -53,15 +64,15 @@ def sendmail(subject, text_message):
 
 def comment(value):
     if value > 200:
-        return "Pretty wet"
+        return "DRY!!"
     if value > 150:
-        return "Wet enough"
+        return "Need water"
     if value > 100:
         return "Barely enough"
     if value > 50:
-        return "Need water"
+        return "Wet enough"
     ## else
-    return "DRY!!"
+    return "Too wet!!"
 
 
 ### MAIN ###
@@ -69,21 +80,28 @@ relay_off()
 time.sleep(2) # give a moment for the configuration to take effect
 relay_on()
 time.sleep(2) # wait for some measurements are actually made
-bus.write_byte(address,Analogs[0])
-moisture = 0
-for i in range(1,5):
-    moisture = bus.read_byte(address)
-    print("Moisture detected: {}".format(moisture))
+for moist in moistures:
+    print("Checking pot {} channel {}".format(moist.Pot,moist.Channel))
+    moisture = 0
+    
+    for i in range(1,10):
+        bus.write_byte(address,moist.Channel) # Activate analog channel
+        moisture = bus.read_byte(address)
+        print("Moisture detected: {}".format(moisture))
 
-print("Last reading: {}".format(moisture))
+    print("Last reading: {}".format(moisture))
+    moist.MoistRead = moisture
 
 relay_off()
 destroy()
 
 a_subject = "Moisture reading at {}".format(dt_string)
-a_message = "Reading is: {} - {}".format(moisture, comment(moisture))
+a_message = ""
+
+for moist in moistures:
+    a_message = "{}\nReading for {} is: {} - {}".format(a_message,moist.Pot, moist.MoistRead, comment(moist.MoistRead))
 
 print(a_subject)
 print(a_message)
 
-#sendmail(a_subject, a_message)
+sendmail(a_subject, a_message)
