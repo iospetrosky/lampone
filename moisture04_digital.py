@@ -6,6 +6,7 @@ import smtplib # This is the SMTP library we need to send the email notification
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
+import mysql.connector as mysql
 
 class Moisture:
     def __init__(self, channel, pot):
@@ -65,17 +66,26 @@ def sendmail(subject, text_message):
 def comment(value):
     if value > 200:
         return "DRY!!"
-    if value > 150:
+    if value > 170:
         return "Need water"
-    if value > 100:
+    if value > 120:
         return "Barely enough"
-    if value > 50:
+    if value > 60:
         return "Wet enough"
     ## else
     return "Too wet!!"
 
 
 ### MAIN ###
+mydb = mysql.connect(
+    host="localhost",
+    user="pi",
+    password="emberlee1",
+    database='iam'
+    #use_pure=True
+)
+cur = mydb.cursor(dictionary=True)
+
 relay_off()
 time.sleep(2) # give a moment for the configuration to take effect
 relay_on()
@@ -100,6 +110,9 @@ a_message = ""
 
 for moist in moistures:
     a_message = "{}\nReading for {} is: {} - {}".format(a_message,moist.Pot, moist.MoistRead, comment(moist.MoistRead))
+    cur.execute("insert into sensor_measures (pot, measure) values ('{}',{})".format(moist.Pot, moist.MoistRead))
+
+mydb.close()
 
 print(a_subject)
 print(a_message)
