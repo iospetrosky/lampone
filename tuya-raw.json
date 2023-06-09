@@ -1,0 +1,212 @@
+{
+    "result": [
+        {
+            "icon": "smart/device_icon/eu1592319005051lNouG/bfad66e0f90becb7a4zkzt163343161170566.png",
+            "product_id": "5bvnmoqjth5nd4de",
+            "owner_id": "13233367",
+            "lon": "-1.5841",
+            "biz_type": 18,
+            "mapping": {
+                "11": {
+                    "type": "Integer",
+                    "values": {
+                        "step": 1,
+                        "unit": "s",
+                        "max": 86400,
+                        "min": 0,
+                        "scale": 0
+                    },
+                    "code": "countdown_1"
+                },
+                "1": {
+                    "type": "Boolean",
+                    "values": {},
+                    "code": "switch_1"
+                }
+            },
+            "status": [
+                {
+                    "value": false,
+                    "code": "switch_1"
+                },
+                {
+                    "value": 0,
+                    "code": "countdown_1"
+                }
+            ],
+            "category": "cz",
+            "local_key": "bfac3b3d8f1cd01a",
+            "name": "Green",
+            "uid": "eu1592319005051lNouG",
+            "ip": "95.146.93.217",
+            "time_zone": "+00:00",
+            "sub": false,
+            "update_time": 1686163753,
+            "online": true,
+            "product_name": "Smart socket",
+            "create_time": 1592323189,
+            "model": "SP21/SP22",
+            "uuid": "c7c0b50be3b16023",
+            "lat": "54.9946",
+            "id": "bfad66e0f90becb7a4zkzt",
+            "active_time": 1644840026
+        },
+        {
+            "icon": "smart/icon/1534306274gqn7iuvlbs5_0.jpg",
+            "product_id": "5bvnmoqjth5nd4de",
+            "owner_id": "13233367",
+            "lon": "-1.5841",
+            "biz_type": 18,
+            "mapping": {
+                "11": {
+                    "type": "Integer",
+                    "values": {
+                        "step": 1,
+                        "unit": "s",
+                        "max": 86400,
+                        "min": 0,
+                        "scale": 0
+                    },
+                    "code": "countdown_1"
+                },
+                "1": {
+                    "type": "Boolean",
+                    "values": {},
+                    "code": "switch_1"
+                }
+            },
+            "status": [
+                {
+                    "value": true,
+                    "code": "switch_1"
+                },
+                {
+                    "value": 0,
+                    "code": "countdown_1"
+                }
+            ],
+            "category": "cz",
+            "local_key": "ad46ecffe1ef0c0b",
+            "name": "JOLLY",
+            "uid": "eu1592319005051lNouG",
+            "ip": "95.146.93.217",
+            "time_zone": "+00:00",
+            "sub": false,
+            "update_time": 1673719209,
+            "online": false,
+            "product_name": "Smart socket",
+            "create_time": 1592337279,
+            "model": "SP21/SP22",
+            "uuid": "ae1ab9c201b38388",
+            "lat": "54.9946",
+            "id": "bf61be231bcf42e639r9zj",
+            "active_time": 1644839667
+        },
+        {
+            "icon": "smart/device_icon/eu1592319005051lNouG/20146435807d3a4a7ecf163343149139749.png",
+            "product_id": "UhLkQlpfvO0fdrf3",
+            "owner_id": "13233367",
+            "lon": "-1.5841",
+            "biz_type": 18,
+            "mapping": {
+                "5": {
+                    "type": "Integer",
+                    "values": {
+                        "unit": "W",
+                        "scale": 0,
+                        "min": 0,
+                        "max": 50000,
+                        "step": 1
+                    },
+                    "code": "cur_power"
+                },
+                "4": {
+                    "type": "Integer",
+                    "values": {
+                        "unit": "mA",
+                        "scale": 0,
+                        "min": 0,
+                        "max": 30000,
+                        "step": 1
+                    },
+                    "code": "cur_current"
+                },
+                "1": {
+                    "type": "Boolean",
+                    "values": {},
+                    "code": "switch"
+                },
+                "6": {
+                    "type": "Integer",
+                    "values": {
+                        "unit": "V",
+                        "scale": 0,
+                        "min": 0,
+                        "max": 2500,
+                        "step": 1
+                    },
+                    "code": "cur_voltage"
+                },
+                "2": {
+                    "type": "Integer",
+                    "values": {
+                        "step": 1,
+                        "unit": "s",
+                        "max": 86400,
+                        "min": 0,
+                        "scale": 0
+                    },
+                    "code": "countdown_1"
+                }
+            },
+            "status": [
+                {
+                    "value": false,
+                    "code": "switch"
+                },
+                {
+                    "value": 0,
+                    "code": "countdown_1"
+                },
+                {
+                    "value": 0,
+                    "code": "cur_current"
+                },
+                {
+                    "value": 0,
+                    "code": "cur_power"
+                },
+                {
+                    "value": 2452,
+                    "code": "cur_voltage"
+                }
+            ],
+            "category": "cz",
+            "local_key": "95e2fd6f69d14012",
+            "name": "Blue",
+            "uid": "eu1592319005051lNouG",
+            "ip": "95.146.93.217",
+            "time_zone": "+00:00",
+            "sub": false,
+            "update_time": 1644840881,
+            "online": false,
+            "product_name": "Smart Plug, Energy Monitoring",
+            "create_time": 1544301973,
+            "model": "HYS-01-049 \u5357\u8f9b\u82f1\u89c4",
+            "uuid": "20146435807d3a4a7ecf",
+            "lat": "54.9946",
+            "id": "20146435807d3a4a7ecf",
+            "active_time": 1644839953
+        }
+    ],
+    "success": true,
+    "file": {
+        "description": "Full raw list of Tuya devices.",
+        "account": "4k7ad9vgadsddg9wda44",
+        "tinytuya": "1.12.8",
+        "name": "tuya-raw.json",
+        "date": "2023-06-08T19:08:16.150334"
+    },
+    "t": 1686247695293,
+    "tid": "70403072062711eea795ce4cada2c678"
+}

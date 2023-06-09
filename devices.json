@@ -1,0 +1,131 @@
+[
+    {
+        "category": "cz",
+        "icon": "https://images.tuyaeu.com/smart/device_icon/eu1592319005051lNouG/bfad66e0f90becb7a4zkzt163343161170566.png",
+        "name": "Green",
+        "product_id": "5bvnmoqjth5nd4de",
+        "sub": false,
+        "product_name": "Smart socket",
+        "mac": "68:57:2d:89:98:a5",
+        "biz_type": 18,
+        "model": "SP21/SP22",
+        "mapping": {
+            "11": {
+                "type": "Integer",
+                "values": {
+                    "step": 1,
+                    "unit": "s",
+                    "max": 86400,
+                    "min": 0,
+                    "scale": 0
+                },
+                "code": "countdown_1"
+            },
+            "1": {
+                "type": "Boolean",
+                "values": {},
+                "code": "switch_1"
+            }
+        },
+        "key": "bfac3b3d8f1cd01a",
+        "uuid": "c7c0b50be3b16023",
+        "id": "bfad66e0f90becb7a4zkzt"
+    },
+    {
+        "category": "cz",
+        "icon": "https://images.tuyaeu.com/smart/icon/1534306274gqn7iuvlbs5_0.jpg",
+        "name": "JOLLY",
+        "product_id": "5bvnmoqjth5nd4de",
+        "sub": false,
+        "product_name": "Smart socket",
+        "mac": "68:57:2d:89:8e:ac",
+        "biz_type": 18,
+        "model": "SP21/SP22",
+        "mapping": {
+            "11": {
+                "type": "Integer",
+                "values": {
+                    "step": 1,
+                    "unit": "s",
+                    "max": 86400,
+                    "min": 0,
+                    "scale": 0
+                },
+                "code": "countdown_1"
+            },
+            "1": {
+                "type": "Boolean",
+                "values": {},
+                "code": "switch_1"
+            }
+        },
+        "key": "ad46ecffe1ef0c0b",
+        "uuid": "ae1ab9c201b38388",
+        "id": "bf61be231bcf42e639r9zj"
+    },
+    {
+        "category": "cz",
+        "icon": "https://images.tuyaeu.com/smart/device_icon/eu1592319005051lNouG/20146435807d3a4a7ecf163343149139749.png",
+        "name": "Blue",
+        "product_id": "UhLkQlpfvO0fdrf3",
+        "sub": false,
+        "product_name": "Smart Plug, Energy Monitoring",
+        "mac": "80:7d:3a:4a:7e:cf",
+        "biz_type": 18,
+        "model": "HYS-01-049 \u5357\u8f9b\u82f1\u89c4",
+        "mapping": {
+            "5": {
+                "type": "Integer",
+                "values": {
+                    "unit": "W",
+                    "scale": 0,
+                    "min": 0,
+                    "max": 50000,
+                    "step": 1
+                },
+                "code": "cur_power"
+            },
+            "4": {
+                "type": "Integer",
+                "values": {
+                    "unit": "mA",
+                    "scale": 0,
+                    "min": 0,
+                    "max": 30000,
+                    "step": 1
+                },
+                "code": "cur_current"
+            },
+            "1": {
+                "type": "Boolean",
+                "values": {},
+                "code": "switch"
+            },
+            "6": {
+                "type": "Integer",
+                "values": {
+                    "unit": "V",
+                    "scale": 0,
+                    "min": 0,
+                    "max": 2500,
+                    "step": 1
+                },
+                "code": "cur_voltage"
+            },
+            "2": {
+                "type": "Integer",
+                "values": {
+                    "step": 1,
+                    "unit": "s",
+                    "max": 86400,
+                    "min": 0,
+                    "scale": 0
+                },
+                "code": "countdown_1"
+            }
+        },
+        "key": "95e2fd6f69d14012",
+        "uuid": "20146435807d3a4a7ecf",
+        "id": "20146435807d3a4a7ecf"
+    }
+]

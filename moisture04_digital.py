@@ -17,8 +17,8 @@ class Moisture:
 address = 0x48 # test with command: i2cdetect -y 1
 
 moistures = [
-    Moisture(0x40, 'Strawberry'),
-    Moisture(0x41, 'Forest')
+    Moisture(0x40, 'Daisy'),
+    Moisture(0x41, 'Lily')
 ]
 
 Relay = 7 # pin to control the relay
