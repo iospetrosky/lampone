@@ -1,5 +1,4 @@
 // This sketch works for any NodeMCU controller
-
 #define P1 D5
 #define P2 D6
 #define P3 D7
