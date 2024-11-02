@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
-import smbus
+import smbus # remember to activate I2C with 'sudo raspi-config'
 import time
 import smtplib # This is the SMTP library we need to send the email notification
 from email.mime.multipart import MIMEMultipart
@@ -16,9 +16,12 @@ class Moisture:
 
 address = 0x48 # test with command: i2cdetect -y 1
 
+# 0x40 = red/gray wires
+# 0x41 = blue/green wires
+
 moistures = [
-    Moisture(0x40, 'Daisy'),
-    Moisture(0x41, 'Lily')
+    Moisture(0x40, 'Peperoncini'),
+    Moisture(0x41, 'Pomodori')
 ]
 
 Relay = 7 # pin to control the relay
