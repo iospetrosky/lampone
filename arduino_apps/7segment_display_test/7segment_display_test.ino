@@ -1,8 +1,14 @@
 // This sketch works for any NodeMCU controller
-#define PAUSA 1000
+/*
+interesting tutorial here
+https://www.circuitbasics.com/arduino-7-segment-display-tutorial/
 
-int pins[] = { D1, D7 };
-int pin_count = 2;
+it also explains how to use the sevseg library
+*/
+#define PAUSA 200
+
+int pins[] = { D1, D7, D4 };
+int pin_count = 3;
 
 void welcome_blink() {
   for (int x = 0; x < 6; x++) {
@@ -25,7 +31,6 @@ void setup() {
   welcome_blink();
 }
 
-// the loop function runs over and over again forever
 void loop() {
   for (int x = 0; x < pin_count; x++) {
     digitalWrite(pins[x], LOW);
