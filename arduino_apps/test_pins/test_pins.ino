@@ -1,6 +1,6 @@
 // This sketch works for any NodeMCU controller
-#define P1 D5
-#define P2 D6
+#define P1 D2
+#define P2 D1
 #define P3 D7
 #define P4 D8
 #define PAUSA 200
