@@ -7,12 +7,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 import mysql.connector as mysql
+import requests
 
 class Moisture:
-    def __init__(self, channel, pot):
+    def __init__(self, channel, pot, tsp_field): ## last param is the field in thingspeak
         self.Channel = channel
         self.Pot = pot
         self.MoistRead = 0
+        self.ThingSpeskField = tsp_field
 
 address = 0x48 # test with command: i2cdetect -y 1
 
@@ -20,8 +22,8 @@ address = 0x48 # test with command: i2cdetect -y 1
 # 0x41 = blue/green wires
 
 moistures = [
-    Moisture(0x40, 'Peperoncini'),
-    Moisture(0x41, 'Pomodori')
+    Moisture(0x40, 'Peperoncini', "field2"),
+    Moisture(0x41, 'Rose', "field3")
 ]
 
 Relay = 7 # pin to control the relay
@@ -114,8 +116,15 @@ a_message = ""
 for moist in moistures:
     a_message = "{}\nReading for {} is: {} - {}".format(a_message,moist.Pot, moist.MoistRead, comment(moist.MoistRead))
     cur.execute("insert into sensor_measures (pot, measure) values ('{}',{})".format(moist.Pot, moist.MoistRead))
+    # now also save the data on thingspeak
+    url = "https://api.thingspeak.com/update?api_key=DSS1C6ZEID5ZBE2S&{}={}".format(moist.ThingSpeskField, moist.MoistRead)
+    print(url)
+    requests.get(url)
+    time.sleep(35) ## ThingSpeak is not happy if the requests are too fast
 
 mydb.close()
+
+a_message = "{}\n - Check stats here\nhttps://thingspeak.mathworks.com/channels/2731177/private_show".format(a_message)
 
 print(a_subject)
 print(a_message)
