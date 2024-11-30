@@ -124,7 +124,7 @@ for moist in moistures:
 
 mydb.close()
 
-a_message = "{}\n - Check stats here\nhttps://thingspeak.mathworks.com/channels/2731177/private_show".format(a_message)
+a_message = "{}\n - Check stats here\nhttps://thingspeak.mathworks.com/channels/2731177".format(a_message)
 
 print(a_subject)
 print(a_message)

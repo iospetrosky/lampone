@@ -1,37 +1,28 @@
 // This sketch works for any NodeMCU controller
-#define P1 D2
-#define P2 D1
-#define P3 D7
+#define P1 D1
+#define P2 D2
+#define P3 D5
 #define P4 D8
 #define PAUSA 200
+
+int pins[] = {D0, D1, D2, D3, D4, D5, D6, D7, D8};
 
 void setup()
 {
     // initialize digital pin LED_BUILTIN as an output.
-    pinMode(P1, OUTPUT);
-    pinMode(P2, OUTPUT);
-
-    pinMode(P3, OUTPUT);
-    pinMode(P4, OUTPUT);
+    for (int k=0; k<9; k++) {
+      pinMode(pins[k], OUTPUT);
+      digitalWrite(pins[k], LOW);
+    }
 }
 
 // the loop function runs over and over again forever
 void loop()
 {
-    digitalWrite(P1, HIGH); // turn the LED on (HIGH is the voltage level)
+  for (int k=0; k<9; k++) {
+    digitalWrite(pins[k], HIGH); // turn the LED on (HIGH is the voltage level)
     delay(PAUSA);           // wait for a second
-    digitalWrite(P2, HIGH); // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P3, HIGH); // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P4, HIGH); // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P1, LOW);  // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P2, LOW);  // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P3, LOW);  // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
-    digitalWrite(P4, LOW);  // turn the LED on (HIGH is the voltage level)
-    delay(PAUSA);           // wait for a second
+    digitalWrite(pins[k], LOW); // turn the LED on (HIGH is the voltage level)
+    //delay(PAUSA);           // wait for a second
+  }
 }
