@@ -1,0 +1,9 @@
+lights.json
+__* 
+*.png
+doc/
+tileset_tools/
+*.bmp
+*.inf
+*.zip
+
