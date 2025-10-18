@@ -1,0 +1,8 @@
+This is the new main branch.
+Old main is still used as a backup, maybe one
+day will be overwritten with all the changes
+made in the meantime.
+
+Original main contains old scripts that I will
+never use anymore
+

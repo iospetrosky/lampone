@@ -1,11 +1,13 @@
-from gpiozero import LED
-from time import sleep
+import RPi.GPIO as GPIO
+import time
 
-led = LED(25)
-k = 0
-while k < 5:
-    led.on()
-    sleep(1)
-    led.off()
-    sleep(1)
-    k = k +1
+GPIO.setmode(GPIO.BCM)      # Use BCM pin numbering
+GPIO.setup(25, GPIO.OUT)    # Set GPIO 25 as output
+
+for i in range(5):
+    GPIO.output(25, GPIO.HIGH)  # Turn LED on
+    time.sleep(1)
+    GPIO.output(25, GPIO.LOW)   # Turn LED off
+    time.sleep(1)
+
+GPIO.cleanup()              # Reset GPIO state
